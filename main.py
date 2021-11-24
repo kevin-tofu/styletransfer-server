@@ -1,15 +1,20 @@
 
 import os
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
+# from fastapi.middleware.cors import CORSMiddleware
+from starlette.middleware.cors import CORSMiddleware
+
 from routes import styletransfer
 import config
 
 
-app = FastAPI()
-# app = FastAPI(docs_url=None, redoc_url=None, openapi_url=None)
+# app = FastAPI()
+app = FastAPI(docs_url=None, redoc_url=None, openapi_url=None)
 
 origins = ["*"]
+# origins = [
+#     "http://localhost",
+# ]
 
 app.add_middleware(
     CORSMiddleware,
@@ -18,6 +23,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 serverinfo = {
     "version": config.VERSION,
@@ -35,12 +41,7 @@ if __name__ == "__main__":
     
     import uvicorn
     import argparse
-    # from mediapipe_if import test_mediapipe
-    
-    # test_mediapipe.test()
 
-    # myport = os.environ['APP_PORT']
-    # os.getenv('NEW_KEY')
     myport = config.APP_PORT
     print("myport", myport)
 

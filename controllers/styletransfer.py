@@ -40,6 +40,7 @@ class media_styletransfer(media_base):
     def draw_info2image(self, image, fpath_ex, **kwargs):
         
         height, width = image.shape[0], image.shape[1]
+        # if 'style1' in kwargs.keys():
         style_num = np.array(kwargs['style1']).astype(np.int64)
         style_num2 = np.array(kwargs['style2']).astype(np.int64)
         alpha = np.array(kwargs['alpha']).astype(np.float32)
@@ -66,7 +67,7 @@ class media_styletransfer(media_base):
     def draw_info2video(self, fpath_org, fpath_ex, **kwargs):
         pass
     
-    def get_info_image(self, fpath_org, **kwargs):
+    def get_info_image(self, image, **kwargs):
         return {}
 
     def get_info_video(self, fpath_org, **kwargs):
