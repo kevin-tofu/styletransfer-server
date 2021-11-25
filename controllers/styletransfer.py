@@ -1,4 +1,4 @@
-from mediaBase.controllers.media_base import media_base
+from mediaBase.controllers.media_db import media_all
 import numpy as np
 import onnxruntime as ort
 
@@ -7,7 +7,7 @@ from albumentations.augmentations.transforms import Normalize
 from albumentations.augmentations.geometric.resize import Resize
 from skimage import io
 
-class media_styletransfer(media_base):
+class media_styletransfer(media_all):
 
     def __init__(self):
         super().__init__()
@@ -37,8 +37,9 @@ class media_styletransfer(media_base):
         # data_aug = np.expand_dims(data_aug, axis=0)
 
 
-    def draw_info2image(self, image, fpath_ex, **kwargs):
+    def draw_info2image(self, fpath, fpath_ex, **kwargs):
         
+        image = io.imread(fpath)
         height, width = image.shape[0], image.shape[1]
         # if 'style1' in kwargs.keys():
         style_num = np.array(kwargs['style1']).astype(np.int64)
