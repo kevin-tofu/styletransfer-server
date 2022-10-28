@@ -10,7 +10,7 @@ variables:
   IMAGE_NAME: ${CONTAINER_STORE}/${APPLICATION_NAME}:${VERSION}
   GIT_SUBMODULE_STRATEGY: recursive # it needs for importing submodules
 
-# image: docker:19.03.12-dind
+image: docker:19.03.12-dind
 # services:
 #   - docker:19.03.12-dind
   # - docker:18.09-dind
