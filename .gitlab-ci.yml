@@ -8,8 +8,9 @@ variables:
   VERSION: v0
   # VERSION: ${CI_COMMIT_SHORT_SHA}
   IMAGE_NAME: ${CONTAINER_STORE}/${APPLICATION_NAME}:${VERSION}
+  GIT_SUBMODULE_STRATEGY: recursive # it needs for importing submodules
 
-image: docker/20.10.21-alpine3.16
+image: docker:20.10.21-alpine3.16
 
 build-job:
   stage: build
@@ -18,7 +19,7 @@ build-job:
     - if: $CI_COMMIT_BRANCH == "master"
   
   tags:
-    - mylinode
+    - kevin-shell
   script:
     - docker build --no-cache -t ${IMAGE_NAME} .
     - docker push ${IMAGE_NAME}
@@ -34,7 +35,7 @@ test:
     # - if: $CI_MERGE_REQUEST_IID
     - if: $CI_COMMIT_BRANCH == "master"
   tags:
-    - mylinode
+    - kevin-shell
   script:
     - > 
       docker run -t --rm 
@@ -49,7 +50,7 @@ deployment-job:
   - if: '$CI_COMMIT_BRANCH == "master"'
   - if: '$CI_COMMIT_BRANCH == "deployment"'
   tags:
-    - mylinode
+    - kevin-shell
   script:
     # create/update the deployment
     - envsubst < kubernetes_manifest.yml | kubectl apply -f -
