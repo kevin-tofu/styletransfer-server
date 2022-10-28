@@ -18,6 +18,7 @@ services:
 #   - name: docker:20.10.16-dind
 #     command: ["--registry-mirror", "https://hub.docker.com/"]  # Specify the registry mirror to use
 
+
 build-job:
   stage: build
   rules:
@@ -25,7 +26,7 @@ build-job:
     - if: $CI_COMMIT_BRANCH == "master"
   
   tags:
-    - kevin-shell
+    - kevin0
   
   before_script:
   - docker ps
@@ -45,7 +46,7 @@ test:
     # - if: $CI_MERGE_REQUEST_IID
     - if: $CI_COMMIT_BRANCH == "master"
   tags:
-    - kevin-shell
+    - kevin0
   script:
     - > 
       docker run -t --rm 
@@ -60,7 +61,7 @@ deployment-job:
   - if: '$CI_COMMIT_BRANCH == "master"'
   - if: '$CI_COMMIT_BRANCH == "deployment"'
   tags:
-    - kevin-shell
+    - kevin0
   script:
     # create/update the deployment
     - envsubst < kubernetes_manifest.yml | kubectl apply -f -
