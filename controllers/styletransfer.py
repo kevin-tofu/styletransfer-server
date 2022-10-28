@@ -1,4 +1,4 @@
-from mediaBase.controllers.media_db import media_all
+from mediaBase.controllers.media_base import media_prod
 import numpy as np
 import onnxruntime as ort
 
@@ -7,16 +7,14 @@ from albumentations.augmentations.transforms import Normalize
 from albumentations.augmentations.geometric.resize import Resize
 from skimage import io
 
-class media_styletransfer(media_all):
+class media_styletransfer(media_prod):
 
-    def __init__(self):
-        super().__init__()
-        # img = io.imread("./yolo/trump.jpg")
-        # data = np.random.randn(480, 640, 3).astype(np.float32)
+    def __init__(self, _config):
+        super().__init__(_config)
         #
         # setting
         #
-        path_models = './model/result/model.onnx'
+        path_models = f'{_config.PATH_MODEL}/{_config.MODEL_NAME}'
         
         resize_to2 = (512, 512)
         #print(image_height, image_width)#, w2h_ratio=0.75
@@ -31,13 +29,9 @@ class media_styletransfer(media_all):
         #
         self.ort_session = ort.InferenceSession(path_models)
         self.ort_session.get_modelmeta()
-        # first_input_name = self.rt_session.get_inputs()[0]
-        # first_output_name = self.ort_session.get_outputs()[0]
-        
-        # data_aug = np.expand_dims(data_aug, axis=0)
 
 
-    def draw_info2image(self, fpath, fpath_ex, **kwargs):
+    def draw_info2image(self, fpath: str, fpath_ex: str, **kwargs):
         
         image = io.imread(fpath)
         height, width = image.shape[0], image.shape[1]
@@ -65,11 +59,11 @@ class media_styletransfer(media_all):
         io.imsave(fpath_ex, pred)
 
     
-    def draw_info2video(self, fpath_org, fpath_ex, **kwargs):
-        pass
+    # def draw_info2video(self, fpath_org, fpath_ex, **kwargs):
+    #     pass
     
-    def get_info_image(self, image, **kwargs):
-        return {}
+    # def get_info_image(self, image, **kwargs):
+    #     return {}
 
-    def get_info_video(self, fpath_org, **kwargs):
-        return {}
+    # def get_info_video(self, fpath_org, **kwargs):
+    #     return {}

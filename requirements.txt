@@ -1,3 +1,4 @@
+requests==2.28
 albumentations==1.1.0
 anyio==3.3.4
 asgiref==3.4.1
