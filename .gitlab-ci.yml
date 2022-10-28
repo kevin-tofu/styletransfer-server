@@ -1,0 +1,23 @@
+stages:
+  - build
+  - test
+  - deploy
+
+variables:
+  APPLICATION_NAME: styletransfer-server
+  VERSION: v0
+
+build-job:
+  rules:
+    # - if: $CI_MERGE_REQUEST_IID
+    - if: $CI_COMMIT_BRANCH == "master"
+  stage: build
+  image: node:latest
+  script:
+    - docker build --no-cache -t ${CONTAINER_STORE}/${APPLICATION_NAME}:${VERSION} .
+  # artifacts:
+  #   paths:
+  #       - build/
+
+
+
