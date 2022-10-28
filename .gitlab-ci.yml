@@ -30,7 +30,7 @@ build-job:
   
   before_script:
     - docker ps
-    - cat ${STORE_PASSWORD} | docker login --username ${STORE_USERNAME} --password-stdin
+    - echo ${STORE_PASSWORD} | docker login --username ${STORE_USERNAME} --password-stdin
 
   script:
     - docker build --no-cache -t ${IMAGE_NAME} .
@@ -49,7 +49,7 @@ test:
   tags:
     - myshell
   before_script:
-    - cat ${STORE_PASSWORD} | docker login --username ${STORE_USERNAME} --password-stdin
+    - echo ${STORE_PASSWORD} | docker login --username ${STORE_USERNAME} --password-stdin
 
   script:
     - > 
@@ -67,7 +67,7 @@ deployment-job:
   tags:
     - myshell
   before_script:
-    - cat ${STORE_PASSWORD} | docker login --username ${STORE_USERNAME} --password-stdin
+    - echo ${STORE_PASSWORD} | docker login --username ${STORE_USERNAME} --password-stdin
   script:
     # create/update the deployment
     - envsubst < kubernetes_manifest.yml | kubectl apply -f -
