@@ -10,12 +10,12 @@ variables:
   IMAGE_NAME: ${CONTAINER_STORE}/${APPLICATION_NAME}:${VERSION}
   GIT_SUBMODULE_STRATEGY: recursive # it needs for importing submodules
 
-# image: docker:19.03.12-dind
+image: docker:19.03.12-dind
 # services:
 #   - docker:18.09-dind
-services:
-  - name: docker:20.10.16-dind
-    command: ["--registry-mirror", "https://hub.docker.com/"]  # Specify the registry mirror to use
+# services:
+#   - name: docker:20.10.16-dind
+#     command: ["--registry-mirror", "https://hub.docker.com/"]  # Specify the registry mirror to use
 
 
 
@@ -27,6 +27,10 @@ build-job:
   
   tags:
     - kevin-shell
+  
+  before_script:
+  - docker ps
+
   script:
     - docker build --no-cache -t ${IMAGE_NAME} .
     - docker push ${IMAGE_NAME}
