@@ -30,6 +30,7 @@ build-job:
   
   before_script:
   - docker ps
+  - docker login -u STORE_USERNAME -p STORE_PASSWORD
 
   script:
     - docker build --no-cache -t ${IMAGE_NAME} .
@@ -47,6 +48,9 @@ test:
     - if: $CI_COMMIT_BRANCH == "master"
   tags:
     - myshell
+  before_script:
+  - docker ps
+  - docker login -u STORE_USRNAME -p STORE_PASSWORD
   script:
     - > 
       docker run -t --rm 
@@ -58,10 +62,13 @@ test:
 deployment-job:
   stage: deployment
   rules:
-  - if: '$CI_COMMIT_BRANCH == "master"'
+  # - if: '$CI_COMMIT_BRANCH == "master"'
   - if: '$CI_COMMIT_BRANCH == "deployment"'
   tags:
     - myshell
+  before_script:
+  - docker ps
+  - docker login -u STORE_USRNAME -p STORE_PASSWORD
   script:
     # create/update the deployment
     - envsubst < kubernetes_manifest.yml | kubectl apply -f -
