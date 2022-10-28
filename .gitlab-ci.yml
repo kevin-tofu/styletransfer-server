@@ -6,18 +6,55 @@ stages:
 variables:
   APPLICATION_NAME: styletransfer-server
   VERSION: v0
+  # VERSION: ${CI_COMMIT_SHORT_SHA}
+  IMAGE_NAME: ${CONTAINER_STORE}/${APPLICATION_NAME}:${VERSION}
 
 build-job:
   rules:
     # - if: $CI_MERGE_REQUEST_IID
     - if: $CI_COMMIT_BRANCH == "master"
   stage: build
-  image: node:latest
+  tags:
+    - mylinode
+  # image: node:latest
   script:
-    - docker build --no-cache -t ${CONTAINER_STORE}/${APPLICATION_NAME}:${VERSION} .
+    - docker build --no-cache -t ${IMAGE_NAME} .
+    - docker push ${IMAGE_NAME}
+    - docker rmi ${IMAGE_NAME}
+
   # artifacts:
   #   paths:
   #       - build/
 
+test:
+  stage: test
+  rules:
+    # - if: $CI_MERGE_REQUEST_IID
+    - if: $CI_COMMIT_BRANCH == "master"
+  tags:
+    - mylinode
+  script:
+    - > 
+      docker run -t --rm 
+      --name styletransfer 
+      --env APP_PORT=3333
+      -p 3333:80 ${IMAGE_NAME} python test_main.py
 
 
+deployment:
+  stage: deployment
+  rules:
+  - if: '$CI_COMMIT_BRANCH == "master"'
+  - if: '$CI_COMMIT_BRANCH == "deployment"'
+  tags:
+    - mylinode
+  script:
+    # create/update the deployment
+    - envsubst < kubernetes_manifest.yml | kubectl apply -f -
+    # Pull latest image of deployment
+    # - kubectl rollout restart deployment/${APPLICATION_NAME}
+    - kubectl rollout restart deployment/${APPLICATION_NAME}
+  environment:
+    name: production
+    kubernetes:
+      namespace: ${KUBERNETES_NAMESPACE}
