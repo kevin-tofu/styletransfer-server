@@ -9,6 +9,8 @@ variables:
   # VERSION: ${CI_COMMIT_SHORT_SHA}
   IMAGE_NAME: ${CONTAINER_STORE}/${APPLICATION_NAME}:${VERSION}
 
+image: docker/20.10.21-alpine3.16
+
 build-job:
   rules:
     # - if: $CI_MERGE_REQUEST_IID
@@ -16,8 +18,7 @@ build-job:
   stage: build
   tags:
     - mylinode
-  # image: node:latest
-  script:
+s  script:
     - docker build --no-cache -t ${IMAGE_NAME} .
     - docker push ${IMAGE_NAME}
     - docker rmi ${IMAGE_NAME}
