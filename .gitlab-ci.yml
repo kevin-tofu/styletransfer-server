@@ -1,7 +1,7 @@
 stages:
   - build
   - test
-  - deploy
+  - deployment
 
 variables:
   APPLICATION_NAME: styletransfer-server
@@ -43,7 +43,7 @@ test:
       -p 3333:80 ${IMAGE_NAME} python test_main.py
 
 
-deployment:
+deployment-job:
   stage: deployment
   rules:
   - if: '$CI_COMMIT_BRANCH == "master"'
