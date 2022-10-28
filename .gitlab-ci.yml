@@ -12,13 +12,14 @@ variables:
 image: docker/20.10.21-alpine3.16
 
 build-job:
+  stage: build
   rules:
     # - if: $CI_MERGE_REQUEST_IID
     - if: $CI_COMMIT_BRANCH == "master"
-  stage: build
+  
   tags:
     - mylinode
-s  script:
+  script:
     - docker build --no-cache -t ${IMAGE_NAME} .
     - docker push ${IMAGE_NAME}
     - docker rmi ${IMAGE_NAME}
