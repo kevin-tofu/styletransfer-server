@@ -13,6 +13,11 @@ variables:
 # image: docker:19.03.12-dind
 # services:
 #   - docker:18.09-dind
+services:
+  - name: docker:20.10.16-dind
+    command: ["--registry-mirror", "https://hub.docker.com/"]  # Specify the registry mirror to use
+
+
 
 build-job:
   stage: build
