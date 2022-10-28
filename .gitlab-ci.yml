@@ -26,7 +26,7 @@ build-job:
     - if: $CI_COMMIT_BRANCH == "master"
   
   tags:
-    - kevin
+    - dind
   
   before_script:
   - docker ps
@@ -46,7 +46,7 @@ test:
     # - if: $CI_MERGE_REQUEST_IID
     - if: $CI_COMMIT_BRANCH == "master"
   tags:
-    - kevin
+    - dind
   script:
     - > 
       docker run -t --rm 
@@ -61,7 +61,7 @@ deployment-job:
   - if: '$CI_COMMIT_BRANCH == "master"'
   - if: '$CI_COMMIT_BRANCH == "deployment"'
   tags:
-    - kevin
+    - dind
   script:
     # create/update the deployment
     - envsubst < kubernetes_manifest.yml | kubectl apply -f -
