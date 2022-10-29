@@ -50,7 +50,8 @@ test:
     - myshell
   before_script:
     - echo ${STORE_PASSWORD} | docker login --username ${STORE_USERNAME} --password-stdin
-    - cp /home/gitlab-runner/model.onnx ./model/
+    - cp /home/gitlab-runner/data/model.onnx ./model/
+    - cp /home/gitlab-runner/data/temp ./
   script:
     - > 
       docker run -t --rm 
