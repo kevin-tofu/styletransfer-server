@@ -54,7 +54,7 @@ test:
     - mkdir model
     - mkdir temp
     - cp /home/gitlab-runner/data/model.onnx ./model/
-    - cp /home/gitlab-runner/data/temp ./
+    - cp -r /home/gitlab-runner/data/temp ./
   script:
     - > 
       docker run -t --rm 
