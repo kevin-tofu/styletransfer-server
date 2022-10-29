@@ -23,7 +23,8 @@ build-job:
   stage: build
   rules:
     # - if: $CI_MERGE_REQUEST_IID
-    - if: $CI_COMMIT_BRANCH == "master"
+    # - if: $CI_COMMIT_BRANCH == "master"
+    - if: $CI_COMMIT_BRANCH == "build"
   
   tags:
     - myshell
@@ -50,6 +51,8 @@ test:
     - myshell
   before_script:
     - echo ${STORE_PASSWORD} | docker login --username ${STORE_USERNAME} --password-stdin
+    - mkdir model
+    - mkdir temp
     - cp /home/gitlab-runner/data/model.onnx ./model/
     - cp /home/gitlab-runner/data/temp ./
   script:
