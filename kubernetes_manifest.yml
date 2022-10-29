@@ -24,6 +24,8 @@ spec:
           value: kohei
         - name: VERSION
           value: ${CI_COMMIT_SHORT_SHA}
+        - name: TZ
+          value: Tokyo
 ---
 # apiVersion: v1
 # kind: Service
