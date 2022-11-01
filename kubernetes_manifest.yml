@@ -25,7 +25,7 @@ spec:
         - name: VERSION
           value: ${CI_COMMIT_SHORT_SHA}
         - name: TZ
-          value: Tokyo
+          value: Asia/Tokyo
 ---
 # apiVersion: v1
 # kind: Service
