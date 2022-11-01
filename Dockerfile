@@ -1,4 +1,4 @@
-# ARG registry=test
+ARG registry=test
 # FROM fukouhei001/opencv-python10:v1
 FROM ${registry}/opencv-python3-10:v1
 # FROM ${registry}/opencv-python3-8:v1
