@@ -38,7 +38,7 @@ build-job:
     - echo ${STORE_PASSWORD} | docker login --username ${STORE_USERNAME} --password-stdin
 
   script:
-    - docker build --no-cache -t ${IMAGE_NAME} .
+    - docker build --no-cache -t ${IMAGE_NAME} --build-arg registry=$CONTAINER_STORE .
     - docker push ${IMAGE_NAME}
     - docker rmi ${IMAGE_NAME}
 
