@@ -24,7 +24,8 @@ pip install -r requirements.txt
 python main.py --port 5555
 ```
 
-### How to use the server as client
+### How to use the server from client
+Here is python code example 
 ```
 import requests
 
