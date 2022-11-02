@@ -21,7 +21,7 @@ spec:
         - containerPort: 80
         env:
         - name: AUTHOR
-          value: kohei
+          value: kevin
         - name: VERSION
           value: ${CI_COMMIT_SHORT_SHA}
         - name: TZ
