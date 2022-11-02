@@ -6,7 +6,7 @@ The users choose
   * 2 styles which users would like to mix
   * float value, alpha that represents how much weight for each styles you would like to put on
 
-You can learn style-transfer model using some repositories like below.   
+You can make style-transfer model learned using some repositories like below.   
 [https://github.com/ryanwongsa/Real-time-multi-style-transfer]
 
 But essentially, you have to convert the models to onnx-style on this repository.  
@@ -16,3 +16,31 @@ But essentially, you have to convert the models to onnx-style on this repository
 | Route | Method | Query / Body | Description |
 | --- | --- | --- | --- |
 | /transfer-image | POST | - | Post an image to get styletransferred image. |
+
+## How to use
+### How to launch the Server
+```
+pip install -r requirements.txt
+python main.py --port 5555
+```
+
+### How to use the server as client
+```
+import requests
+
+path_data = './temp'
+fname_image = 'test_image.jpg'
+params = {
+  'style1': 1, \
+  'style2': 2, \
+  'alpha': 0.3
+}
+with open(f"{path_data}/{fname_image}", "rb") as _file:
+    res = requests.post(f'http://localhost:5555/transfer-image', \
+                        params = params, \
+                        files = {"file": (f"{fname_image}", file, "image/jpeg")}
+    )
+```
+
+## Examples  
+
