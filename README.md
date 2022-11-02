@@ -1,9 +1,9 @@
 # StyleTransfer Server
  Web-Server for Real Time Style Transfer.
 The model in this server is based on the paper 'A LEARNED REPRESENTATION FOR ARTISTIC STYLE' [https://arxiv.org/pdf/1610.07629.pdf]. 
-This model learns multiple styles and mixes 2 styles for images.  
+This model learns multiple styles and blends 2 styles for images.  
 The users choose 
-  * 2 styles which users would like to mix
+  * 2 styles which users would like to blend
   * float value, alpha that represents how much weight for each styles you would like to put on
 
 You can make style-transfer model learned using some repositories like below.   
