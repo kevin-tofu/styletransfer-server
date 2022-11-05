@@ -45,4 +45,5 @@ with open(f"{path_data}/{fname_image}", "rb") as _file:
 
 ## Examples  
 <img src="https://i1.wp.com/totalvision.kevin-asobi.com/wp-content/uploads/2022/07/Trump1.jpg?ssl=1" alt="styletransfer1" title="styletransfer1">
-! []
+
+<img src="https://totalvision.kevin-asobi.com/wp-content/uploads/2022/11/b89410d3-1bb9-475c-801d-5ffdd1e05781.png" alt="styletransfer1" title="styletransfer1">
