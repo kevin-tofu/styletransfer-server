@@ -45,3 +45,4 @@ with open(f"{path_data}/{fname_image}", "rb") as _file:
 
 ## Examples  
 
+! [https://i1.wp.com/totalvision.kevin-asobi.com/wp-content/uploads/2022/07/Trump1.jpg?ssl=1]
