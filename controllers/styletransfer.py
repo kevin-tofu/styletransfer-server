@@ -7,6 +7,9 @@ from albumentations.augmentations.transforms import Normalize
 from albumentations.augmentations.geometric.resize import Resize
 from skimage import io
 
+import MediaHandler
+
+
 class media_styletransfer(media_prod):
 
     def __init__(self, _config):
