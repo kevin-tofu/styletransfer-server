@@ -42,15 +42,33 @@ class media_styletransfer(MediaHandler.Processor):
     ) -> dict:
         
         if process_name == "transfer-image":
-
-            self.transfer(fpath_org, fpath_dst, **kwargs)
-
+            image = io.imread(fpath)
+            pred = self.transfer(image, fpath_dst, **kwargs)
+            io.imsave(fpath_dst, pred)
             return dict(status = "OK")
 
 
-    def transfer(self, fpath: str, fpath_ex: str, **kwargs):
+    async def main_BytesIO(self, \
+                           process_name: str, \
+                           fBytesIO: io.BytesIO, \
+                        **kwargs
+    ):
         
-        image = io.imread(fpath)
+        if process_name == "transfer-image":
+            img_pil = Image.open(fBytesIO)
+            img_np = np.asarray(img_pil)
+            self.transfer(img_np, fpath_dst, **kwargs)
+
+            ext = 'jpg'
+            _, img_np = cv2.imencode(f'.{ext}', img_np)
+            
+            return Response(content = img_np.tostring(), \
+                            media_type = f'image/{ext}'
+            )
+
+    def transfer(self, fpath: np.ndarray, **kwargs):
+        
+        
         height, width = image.shape[0], image.shape[1]
         # if 'style1' in kwargs.keys():
         style_num = np.array(kwargs['style1']).astype(np.int64)
@@ -73,6 +91,6 @@ class media_styletransfer(MediaHandler.Processor):
         # pred = np.transpose(pred, (2, 0, 1))
         # print(pred.shape, type(pred))
         
-        io.imsave(fpath_ex, pred)
-
+        
+        return pred
     

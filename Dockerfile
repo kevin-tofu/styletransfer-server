@@ -6,6 +6,7 @@ FROM ${registry}/opencv-python3-8:v1
 RUN apt-get update -y
 RUN apt-get upgrade -y
 RUN apt-get install build-essential -y
+RUN apt-get install git -y
 # RUN apt install -y ffmpeg
 
 WORKDIR /myapp
