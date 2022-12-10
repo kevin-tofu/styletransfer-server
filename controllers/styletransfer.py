@@ -62,10 +62,11 @@ class media_styletransfer(MediaHandler.Processor):
             img_pil = Image.open(fBytesIO)
             img_np = np.asarray(img_pil)
             pred = self.transfer(img_np, **kwargs)
+            pred = cv2.cvtColor(pred, cv2.COLOR_RGB2BGR)
 
             ext = 'jpg'
             _, pred = cv2.imencode(f'.{ext}', pred)
-            
+
             return Response(content = pred.tostring(), \
                             media_type = f'image/{ext}'
             )
