@@ -1,4 +1,3 @@
-from mediaBase.controllers.media_base import media_prod
 import numpy as np
 import onnxruntime as ort
 
