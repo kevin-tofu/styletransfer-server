@@ -29,12 +29,3 @@ async def transfer_image(file: UploadFile = File(...), \
     
     # return await handler.post_file("transfer-image", file, "jpg", bgtask, **params)
     return await handler.post_file_BytesIO("transfer-image", file, "jpg", bgtask, **params)
-
-# @router.post('/transfer-image/')
-# async def transfer_video(file: UploadFile = File(...), \
-#                          test: Optional[int] = None):
-#     """
-#     Post a video(.mp4 ) to draw skeleton on the video. 
-#     You can get the video using GET /skeleton_video API. 
-#     """
-#     return await mycontroller.post_video_(file, test=test)

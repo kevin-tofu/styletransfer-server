@@ -96,6 +96,5 @@ class media_styletransfer(MediaHandler.Processor):
         # pred = np.transpose(pred, (2, 0, 1))
         # print(pred.shape, type(pred))
         
-        
         return pred
     
