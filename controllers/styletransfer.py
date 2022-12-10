@@ -4,7 +4,11 @@ import onnxruntime as ort
 from albumentations import Compose
 from albumentations.augmentations.transforms import Normalize
 from albumentations.augmentations.geometric.resize import Resize
-from skimage import io
+# from skimage import io
+import cv2
+from PIL import Image
+from fastapi import Response
+import io
 
 import MediaHandler
 
@@ -43,30 +47,30 @@ class media_styletransfer(MediaHandler.Processor):
         
         if process_name == "transfer-image":
             image = io.imread(fpath)
-            pred = self.transfer(image, fpath_dst, **kwargs)
+            pred = self.transfer(image, **kwargs)
             io.imsave(fpath_dst, pred)
-            return dict(status = "OK")
+            return dictResponse(status = "OK")
 
 
     async def main_BytesIO(self, \
                            process_name: str, \
                            fBytesIO: io.BytesIO, \
-                        **kwargs
+                           **kwargs
     ):
         
         if process_name == "transfer-image":
             img_pil = Image.open(fBytesIO)
             img_np = np.asarray(img_pil)
-            self.transfer(img_np, fpath_dst, **kwargs)
+            pred = self.transfer(img_np, **kwargs)
 
             ext = 'jpg'
-            _, img_np = cv2.imencode(f'.{ext}', img_np)
+            _, pred = cv2.imencode(f'.{ext}', pred)
             
-            return Response(content = img_np.tostring(), \
+            return Response(content = pred.tostring(), \
                             media_type = f'image/{ext}'
             )
 
-    def transfer(self, fpath: np.ndarray, **kwargs):
+    def transfer(self, image: np.ndarray, **kwargs):
         
         
         height, width = image.shape[0], image.shape[1]

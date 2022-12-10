@@ -27,7 +27,8 @@ async def transfer_image(file: UploadFile = File(...), \
     You can get the artistic-style image using GET /image API. 
     """
     
-    return await handler.post_file("transfer-image", file, "jpg", bgtask, **params)
+    # return await handler.post_file("transfer-image", file, "jpg", bgtask, **params)
+    return await handler.post_file_BytesIO("transfer-image", file, "jpg", bgtask, **params)
 
 # @router.post('/transfer-image/')
 # async def transfer_video(file: UploadFile = File(...), \
