@@ -28,4 +28,4 @@ async def transfer_image(file: UploadFile = File(...), \
     """
     
     # return await handler.post_file("transfer-image", file, "jpg", bgtask, **params)
-    return await handler.post_file_BytesIO("transfer-image", file, "jpg", bgtask, **params)
+    return await handler.post_file_BytesIO("transfer-image", file, **params)
