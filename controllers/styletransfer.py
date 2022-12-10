@@ -10,14 +10,15 @@ from skimage import io
 import MediaHandler
 
 
-class media_styletransfer(media_prod):
+class media_styletransfer(MediaHandler.Processor):
 
     def __init__(self, _config):
-        super().__init__(_config)
+        super().__init__(**_config)
+
         #
         # setting
         #
-        path_models = f'{_config.PATH_MODEL}/{_config.MODEL_NAME}'
+        path_models = _config["PATH_MODEL"]
         
         resize_to2 = (512, 512)
         #print(image_height, image_width)#, w2h_ratio=0.75
@@ -34,7 +35,21 @@ class media_styletransfer(media_prod):
         self.ort_session.get_modelmeta()
 
 
-    def draw_info2image(self, fpath: str, fpath_ex: str, **kwargs):
+    async def main_file(self, \
+                        process_name: str, \
+                        fpath_org: str, \
+                        fpath_dst: str, \
+                        **kwargs
+    ) -> dict:
+        
+        if process_name == "transfer-image":
+
+            self.transfer(fpath_org, fpath_dst, **kwargs)
+
+            return dict(status = "OK")
+
+
+    def transfer(self, fpath: str, fpath_ex: str, **kwargs):
         
         image = io.imread(fpath)
         height, width = image.shape[0], image.shape[1]
@@ -62,11 +77,3 @@ class media_styletransfer(media_prod):
         io.imsave(fpath_ex, pred)
 
     
-    # def draw_info2video(self, fpath_org, fpath_ex, **kwargs):
-    #     pass
-    
-    # def get_info_image(self, image, **kwargs):
-    #     return {}
-
-    # def get_info_video(self, fpath_org, **kwargs):
-    #     return {}
