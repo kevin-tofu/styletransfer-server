@@ -1,5 +1,6 @@
 import numpy as np
 import onnxruntime as ort
+from typing import NamedTuple
 
 from albumentations import Compose
 from albumentations.augmentations.transforms import Normalize
@@ -10,23 +11,27 @@ from PIL import Image
 from fastapi import Response
 import io
 
-import MediaHandler
+import mediarouter
 
 
-class media_styletransfer(MediaHandler.Processor):
+class media_styletransfer(mediarouter.processor):
 
-    def __init__(self, _config):
-        super().__init__(**_config)
-
+    def __init__(self, _config: NamedTuple):
+        # super().__init__(**_config)
+        super().__init__()
         #
         # setting
         #
-        path_models = _config["PATH_MODEL"]
+        path_models = _config.path_model
         
-        resize_to2 = (512, 512)
+        resize_to2 = (_config.imsize_h, _config.imsize_w)
         #print(image_height, image_width)#, w2h_ratio=0.75
-        self.transformer = Compose([Resize(resize_to2[0], resize_to2[1], always_apply=True),\
-                                    Normalize(always_apply=True)])
+        self.transformer = Compose(
+            [
+                Resize(resize_to2[0], resize_to2[1], always_apply=True),
+                Normalize(always_apply=True)
+            ]
+        )
         # self.mean = [0.485, 0.456, 0.406]
         # self.std = [0.229, 0.224, 0.225]
         # mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225), max_pixel_value=255.0
@@ -37,25 +42,13 @@ class media_styletransfer(MediaHandler.Processor):
         self.ort_session = ort.InferenceSession(path_models)
         self.ort_session.get_modelmeta()
 
-
-    async def main_file(self, \
-                        process_name: str, \
-                        fpath_org: str, \
-                        fpath_dst: str, \
-                        **kwargs
-    ) -> dict:
-        
-        if process_name == "transfer-image":
-            image = io.imread(fpath)
-            pred = self.transfer(image, **kwargs)
-            io.imsave(fpath_dst, pred)
-            return dictResponse(status = "OK")
-
-
-    async def main_BytesIO(self, \
-                           process_name: str, \
-                           fBytesIO: io.BytesIO, \
-                           **kwargs
+    
+    async def post_BytesIO_process(
+        self,
+        process_name: str,
+        fBytesIO: io.BytesIO,
+        fname_org: str,
+        **kwargs
     ):
         
         if process_name == "transfer-image":
@@ -67,9 +60,13 @@ class media_styletransfer(MediaHandler.Processor):
             ext = 'jpg'
             _, pred = cv2.imencode(f'.{ext}', pred)
 
-            return Response(content = pred.tostring(), \
-                            media_type = f'image/{ext}'
+            return Response(
+                content = pred.tostring(),
+                media_type = f'image/{ext}'
             )
+        else:
+            raise ValueError('process_name is not set correctly')
+
 
     def transfer(self, image: np.ndarray, **kwargs):
         
@@ -84,17 +81,16 @@ class media_styletransfer(MediaHandler.Processor):
 
         outputs = self.ort_session.run(
             ["res_img"],
-            {"img": image_aug, 
-            "style_num": style_num, 
-            "style_num2": style_num2, 
-            "alpha": alpha}
+            {
+                "img": image_aug, 
+                "style_num": style_num, 
+                "style_num2": style_num2, 
+                "alpha": alpha
+            }
         )
         
         trans_back = Compose([Resize(height, width, always_apply=True)])
         pred = outputs[0][0]
         pred = trans_back(image=pred)['image']
-        # pred = np.transpose(pred, (2, 0, 1))
-        # print(pred.shape, type(pred))
         
         return pred
-    

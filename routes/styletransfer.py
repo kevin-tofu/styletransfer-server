@@ -5,23 +5,27 @@ from fastapi import BackgroundTasks
 # from typing import List, Optional
 from routes.styletransfer_depends import params_styletransfer
 from controllers.styletransfer import*
-from config import config
+from config import config_org
 
-mycontroller = media_styletransfer(config)
+mycontroller = media_styletransfer(config_org)
 
 test_config = dict(
     PATH_DATA = "./temp"
 )
 
 
-handler = MediaHandler.Router(mycontroller, MediaHandler.Config(**test_config))
+handler = mediarouter.router(
+    mycontroller, 
+    mediarouter.config(**test_config)
+)
 router = APIRouter(prefix="")
 
 @router.post('/transfer-image/')
-async def transfer_image(file: UploadFile = File(...), \
-                   bgtask: BackgroundTasks = BackgroundTasks(), \
-                   params: dict = Depends(params_styletransfer)
-                   ):
+async def transfer_image(
+    file: UploadFile = File(...),
+    bgtask: BackgroundTasks = BackgroundTasks(),
+    params: dict = Depends(params_styletransfer)
+):
     """
     Post an image(.jpg ) to make it artistic-style. 
     You can get the artistic-style image using GET /image API. 
