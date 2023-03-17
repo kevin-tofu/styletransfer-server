@@ -20,7 +20,7 @@ handler = mediarouter.router(
 )
 router = APIRouter(prefix="")
 
-@router.post('/transfer-image/')
+@router.post('/transferred-image')
 async def transfer_image(
     file: UploadFile = File(...),
     bgtask: BackgroundTasks = BackgroundTasks(),
