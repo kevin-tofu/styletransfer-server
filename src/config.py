@@ -4,7 +4,7 @@ from typing import NamedTuple
 VERSION = os.getenv('VERSION', 'v0'),
 AUTHOR = os.getenv('AUTHOR', 'kevin')
 
-APP_PORT = os.getenv('APP_PORT', 8000)
+APP_PORT = os.getenv('APP_PORT', 80)
 
 PATH_DATA = os.getenv('PATH_DATA', './temp')
 PATH_MODEL = os.getenv('PATH_MODEL', './model/model.onnx')
@@ -21,6 +21,8 @@ IMSIZE_W = os.getenv('IMSIZE_W', 512)
 
 class Config(NamedTuple):
     app_port: int
+    version: str
+    author: str
     path_model: str
     path_data: str
     delete_intaval: int
@@ -30,6 +32,8 @@ class Config(NamedTuple):
 
 config_org = Config(
     APP_PORT,
+    VERSION,
+    AUTHOR,
     PATH_MODEL,
     PATH_DATA,
     DELETE_INTERVAL,

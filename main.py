@@ -4,8 +4,8 @@ from fastapi import FastAPI
 # from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.cors import CORSMiddleware
 
-from routes import styletransfer
-import config
+from src.routes import router
+from src.config import config_org as config
 
 
 app = FastAPI()
@@ -26,15 +26,15 @@ app.add_middleware(
 
 
 serverinfo = {
-    "version": config.VERSION,
-    "author": config.AUTHOR
+    "version": config.version,
+    "author": config.author
 }
 
 @app.get("/")
 def root():
     return serverinfo
 
-app.include_router(styletransfer.router)
+app.include_router(router)
 
 if __name__ == "__main__":
 
@@ -42,12 +42,13 @@ if __name__ == "__main__":
     import uvicorn
     import argparse
 
-    myport = config.APP_PORT
-    print("myport", myport)
+    myport = config.app_port
+    
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('--gpu', '-G', type=int, default='-1', help='gpu number')
+    # parser.add_argument('--gpu', '-G', type=int, default='-1', help='gpu number')
     parser.add_argument('--port', '-P', type=int, default=myport, help='port for http server')
     args = parser.parse_args()
 
+    print("port: ", args.port)
     uvicorn.run('main:app', host="0.0.0.0", port=args.port)

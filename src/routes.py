@@ -1,11 +1,11 @@
-import os, sys
-print(sys.path)
-from fastapi import APIRouter, File, UploadFile, Header, Depends
+# import os, sys
+import mediarouter
+from fastapi import APIRouter, File, UploadFile, Depends
 from fastapi import BackgroundTasks
 # from typing import List, Optional
-from routes.styletransfer_depends import params_styletransfer
-from controllers.styletransfer import*
-from config import config_org
+from src.routes_depends import params_styletransfer
+from src.styletransfer import media_styletransfer
+from src.config import config_org
 
 mycontroller = media_styletransfer(config_org)
 
@@ -20,8 +20,9 @@ handler = mediarouter.router(
 )
 router = APIRouter(prefix="")
 
+
 @router.post('/transferred-image')
-async def transfer_image(
+async def transferred_image(
     file: UploadFile = File(...),
     bgtask: BackgroundTasks = BackgroundTasks(),
     params: dict = Depends(params_styletransfer)
@@ -32,4 +33,5 @@ async def transfer_image(
     """
     
     # return await handler.post_file("transfer-image", file, "jpg", bgtask, **params)
-    return await handler.post_file_BytesIO("transfer-image", file, **params)
+    return await handler.post_file_BytesIO("transferred-image", file, bgtask, **params)
+    # return await handler.post_file_BytesIO("transfer-image", file, **params)

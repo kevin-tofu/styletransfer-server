@@ -17,13 +17,12 @@ import mediarouter
 class media_styletransfer(mediarouter.processor):
 
     def __init__(self, _config: NamedTuple):
-        # super().__init__(**_config)
         super().__init__()
+        
         #
         # setting
         #
         path_models = _config.path_model
-        
         resize_to2 = (_config.imsize_h, _config.imsize_w)
         #print(image_height, image_width)#, w2h_ratio=0.75
         self.transformer = Compose(
@@ -51,7 +50,7 @@ class media_styletransfer(mediarouter.processor):
         **kwargs
     ):
         
-        if process_name == "transfer-image":
+        if process_name == "transferred-image":
             img_pil = Image.open(fBytesIO)
             img_np = np.asarray(img_pil)
             pred = self.transfer(img_np, **kwargs)
