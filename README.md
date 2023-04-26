@@ -1,17 +1,13 @@
 # StyleTransfer Server
 
- Web-Server for Real Time Style Transfer.
-The model in this server is based on the paper 'A LEARNED REPRESENTATION FOR ARTISTIC STYLE' [https://arxiv.org/pdf/1610.07629.pdf].  
+Web-Server for Real Time Style Transfer.
+The model used in this server is based on the paper 'A LEARNED REPRESENTATION FOR ARTISTIC STYLE' [https://arxiv.org/pdf/1610.07629.pdf], which enables the model to learn multiple styles and blend two styles for images.
+To perform style transfer, users are required to select:
 
-This model learns multiple styles and blends 2 styles for images.  
-The users choose  
-    - 2 styles which users would like to blend
-    - float value, alpha that represents how much weight for each styles you would like to put on
+- Two styles they would like to blend
+- A float value, alpha, that represents the weight of each style to be applied.
 
-You can make style-transfer model learned using some repositories like below.  
-[https://github.com/ryanwongsa/Real-time-multi-style-transfer]
-
-But essentially, you have to convert the models to onnx-style on this repository.  
+To use this server, you can utilize style-transfer models from repositories such as [https://github.com/ryanwongsa/Real-time-multi-style-transfer]. However, it is necessary to convert these models to onnx-style on this repository to utilize them in this server.
 
 ## API
 
@@ -25,11 +21,18 @@ But essentially, you have to convert the models to onnx-style on this repository
 
 ```bash
 poetry install
-
 poetry run python main.py --port 5555
 ```
 
 ### How to use the server from client
+
+```bash
+curl -X 'POST' \
+  'http://localhost:3333/transferred-image?style1=1&style2=2&alpha=0.3&test=1' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: multipart/form-data' \
+  -F 'file=@test_image.jpg;type=image/jpeg'
+```
 
 Here is python code example
 
@@ -46,7 +49,7 @@ params = {
 }
 with open(f"{path_data}/{fname_image}", "rb") as _file:
     res = requests.post(
-      'http://localhost:5555/transfer-image', \
+      'http://localhost:5555/transferred-image', \
       params = params, \
       files = {
         "file": (
