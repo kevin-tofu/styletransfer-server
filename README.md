@@ -4,7 +4,7 @@ Web-Server for Real Time Style Transfer.
 The model used in this server is based on the paper 'A LEARNED REPRESENTATION FOR ARTISTIC STYLE' [https://arxiv.org/pdf/1610.07629.pdf], which enables the model to learn multiple styles and blend two styles for images.
 To perform style transfer, users are required to select:
 
-- Two styles they would like to blend
+- Two styles you would like to blend
 - A float value, alpha, that represents the weight of each style to be applied.
 
 To use this server, you can utilize style-transfer models from repositories such as [https://github.com/ryanwongsa/Real-time-multi-style-transfer]. However, it is necessary to convert these models to onnx-style on this repository to utilize them in this server.
