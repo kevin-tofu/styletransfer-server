@@ -12,10 +12,10 @@ from fastapi import Response
 import io
 from fastapi import BackgroundTasks
 
-import mediarouter
+import filerouter
 
 
-class media_styletransfer(mediarouter.processor):
+class media_styletransfer(filerouter.processor):
 
     def __init__(self, _config):
         super().__init__()
@@ -53,6 +53,7 @@ class media_styletransfer(mediarouter.processor):
     ):
         
         if process_name == "transferred-image":
+            print(data)
             bytesio = data['file']['bytesio']
             img_pil = Image.open(bytesio)
             img_np = np.asarray(img_pil)
@@ -71,7 +72,9 @@ class media_styletransfer(mediarouter.processor):
 
 
     def transfer(
-        self, image: np.ndarray, **kwargs
+        self,
+        image: np.ndarray,
+        **kwargs
     ):
         
         height, width = image.shape[0], image.shape[1]

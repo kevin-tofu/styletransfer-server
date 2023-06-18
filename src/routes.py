@@ -1,8 +1,7 @@
 # import os, sys
-import mediarouter
+import filerouter
 from fastapi import APIRouter, File, UploadFile, Depends
 from fastapi import BackgroundTasks
-# from typing import List, Optional
 from src.routes_depends import params_styletransfer
 from src.styletransfer import media_styletransfer
 from src.config import config_org
@@ -10,13 +9,13 @@ from src.config import config_org
 mycontroller = media_styletransfer(config_org)
 
 test_config = dict(
-    PATH_DATA = "./temp"
+    DATA_PATH = "./temp"
 )
 
 
-handler = mediarouter.router(
+handler = filerouter.router(
     mycontroller, 
-    mediarouter.config(**test_config)
+    filerouter.config(**test_config)
 )
 router = APIRouter(prefix="")
 
@@ -31,10 +30,9 @@ async def transferred_image(
     You can get the artistic-style image using GET /image API. 
     """
     
-    # return await handler.post_file("transfer-image", file, "jpg", bgtask, **params)
     return await handler.post_file(
         "transferred-image",
-        mediarouter.processType.BYTESIO,
+        filerouter.processType.BYTESIO,
         file,
         **params
     )
