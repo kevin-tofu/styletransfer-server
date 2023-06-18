@@ -1,10 +1,9 @@
 # import os, sys
 import filerouter
 from fastapi import APIRouter, File, UploadFile, Depends
-from fastapi import BackgroundTasks
-from src.routes_depends import params_styletransfer
-from src.styletransfer import media_styletransfer
-from src.config import config_org
+from routes_depends import params_styletransfer
+from styletransfer import media_styletransfer
+from config import config_org
 
 mycontroller = media_styletransfer(config_org)
 

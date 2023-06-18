@@ -4,8 +4,8 @@ from fastapi import FastAPI
 # from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.cors import CORSMiddleware
 
-from src.routes import router
-from src.config import config_org as config
+from routes import router
+from config import config_org as config
 
 
 app = FastAPI()

@@ -1,7 +1,7 @@
 # import sys
 # sys.path.append('../..')
 from fastapi.testclient import TestClient
-from src.config import config_org as config
+from config import config_org as config
 
 path_data = config.path_data
 name_video = 'test_video.mp4'

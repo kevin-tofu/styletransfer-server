@@ -21,7 +21,7 @@ To use this server, you can utilize style-transfer models from repositories such
 
 ```bash
 poetry install
-poetry run python main.py --port 5555
+poetry run python src/main.py --port 5555
 ```
 
 ### How to use the server from client

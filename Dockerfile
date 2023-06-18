@@ -1,14 +1,16 @@
-ARG registry=test
-# FROM fukouhei001/opencv-python10:v1
-FROM ${registry}/opencv-python3-10:v1
-# FROM ${registry}/opencv-python3-8:v1
-WORKDIR /myapp
-COPY ./ ./
+# ARG registry=test
+# FROM python:3.10.12-bookworm
+FROM python:3.10.12-slim-bookworm
+# FROM ${registry}/opencv-python3-10:v1
 
-RUN apt-get update -y
+WORKDIR /myapp
+COPY ./pyproject.toml ./pyproject.toml
+
+RUN apt-get update
 RUN apt-get upgrade -y
 RUN apt-get install build-essential -y
-RUN apt-get install git -y
+RUN apt-get install curl git -y
+
 ENV POETRY_HOME=/opt/poetry
 RUN curl -sSL https://install.python-poetry.org/  | python && \
     cd /usr/local/bin && \
@@ -17,10 +19,10 @@ RUN curl -sSL https://install.python-poetry.org/  | python && \
 
 RUN poetry install --no-root
 
+COPY ./ ./
 # ENV http_proxy=
 # ENV https_proxy=
 
 EXPOSE 80
 
-CMD ["python", "./main.py"]
-# CMD ["python", "./main_prod.py"]
+CMD ["python", "./src/main.py"]
