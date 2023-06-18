@@ -24,7 +24,6 @@ router = APIRouter(prefix="")
 @router.post('/transferred-image')
 async def transferred_image(
     file: UploadFile = File(...),
-    bgtask: BackgroundTasks = BackgroundTasks(),
     params: dict = Depends(params_styletransfer)
 ):
     """
@@ -33,5 +32,10 @@ async def transferred_image(
     """
     
     # return await handler.post_file("transfer-image", file, "jpg", bgtask, **params)
-    return await handler.post_file_BytesIO("transferred-image", file, bgtask, **params)
-    # return await handler.post_file_BytesIO("transfer-image", file, **params)
+    return await handler.post_file(
+        "transferred-image",
+        mediarouter.processType.BYTESIO,
+        file,
+        **params
+    )
+

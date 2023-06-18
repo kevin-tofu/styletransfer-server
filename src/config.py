@@ -1,5 +1,6 @@
 import os
-from typing import NamedTuple
+# from typing import NamedTuple
+from dataclasses import dataclass
 
 VERSION = os.getenv('VERSION', 'v0'),
 AUTHOR = os.getenv('AUTHOR', 'kevin')
@@ -18,8 +19,8 @@ IMSIZE_W = os.getenv('IMSIZE_W', 512)
 #     DELETE_INTERVAL = DELETE_INTERVAL
 # )
 
-
-class Config(NamedTuple):
+@dataclass
+class Config():
     app_port: int
     version: str
     author: str

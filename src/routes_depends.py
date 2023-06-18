@@ -8,8 +8,8 @@ async def params_styletransfer(
     alpha: Optional[float] = Query(0.0, gt=0, lt=1.0),
     test: Optional[int] = None
 ):
-    '''
-    '''
+    """
+    """
 
     ret = {
         'style1': style1,

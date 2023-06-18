@@ -1,6 +1,6 @@
+from typing import Optional
 import numpy as np
 import onnxruntime as ort
-from typing import NamedTuple
 
 from albumentations import Compose
 from albumentations.augmentations.transforms import Normalize
@@ -10,13 +10,14 @@ import cv2
 from PIL import Image
 from fastapi import Response
 import io
+from fastapi import BackgroundTasks
 
 import mediarouter
 
 
 class media_styletransfer(mediarouter.processor):
 
-    def __init__(self, _config: NamedTuple):
+    def __init__(self, _config):
         super().__init__()
         
         #
@@ -42,16 +43,18 @@ class media_styletransfer(mediarouter.processor):
         self.ort_session.get_modelmeta()
 
     
-    async def post_BytesIO_process(
+    async def post_file_process(
         self,
         process_name: str,
-        fBytesIO: io.BytesIO,
-        fname_org: str,
+        data: dict,
+        file_dst_path: Optional[str] = None,
+        bgtask: BackgroundTasks=BackgroundTasks(),
         **kwargs
     ):
         
         if process_name == "transferred-image":
-            img_pil = Image.open(fBytesIO)
+            bytesio = data['file']['bytesio']
+            img_pil = Image.open(bytesio)
             img_np = np.asarray(img_pil)
             pred = self.transfer(img_np, **kwargs)
             pred = cv2.cvtColor(pred, cv2.COLOR_RGB2BGR)
@@ -67,11 +70,11 @@ class media_styletransfer(mediarouter.processor):
             raise ValueError('process_name is not set correctly')
 
 
-    def transfer(self, image: np.ndarray, **kwargs):
-        
+    def transfer(
+        self, image: np.ndarray, **kwargs
+    ):
         
         height, width = image.shape[0], image.shape[1]
-        # if 'style1' in kwargs.keys():
         style_num = np.array(kwargs['style1']).astype(np.int64)
         style_num2 = np.array(kwargs['style2']).astype(np.int64)
         alpha = np.array(kwargs['alpha']).astype(np.float32)
