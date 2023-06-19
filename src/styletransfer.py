@@ -46,15 +46,15 @@ class media_styletransfer(filerouter.processor):
     async def post_file_process(
         self,
         process_name: str,
-        data: dict,
+        data: filerouter.fileInfo | list[filerouter.fileInfo],
         file_dst_path: Optional[str] = None,
         bgtask: BackgroundTasks=BackgroundTasks(),
         **kwargs
     ):
         
         if process_name == "transferred-image":
-            print(data)
-            bytesio = data['file']['bytesio']
+            # print(data)
+            bytesio = data.bytesio
             img_pil = Image.open(bytesio)
             img_np = np.asarray(img_pil)
             pred = self.transfer(img_np, **kwargs)
